@@ -22,12 +22,35 @@ public class Player {
 		System.out.println("-------------------");
 		for (GameChar gameChar : charList) {
 			System.out.println("ID :" + gameChar.getId() + "\tKarakter : " + gameChar.getName() + " \t Hasar : "
-					+ gameChar.getDamage() + " \t Saðlýk : " + gameChar.getHealth() + " \t Para :"
+					+ gameChar.getDamage() + " \t SaÄŸlÄ±k : " + gameChar.getHealth() + " \t Para :"
 					+ gameChar.getMoney());
 
 		}
+		
+		
+		
+//		public void selectCha() {
+//			switch (chaMenu()) {
+//			case 1:
+//				initPlayer("Samuray", 5, 21, 15);
+//				break;
+//			case 2:
+//				initPlayer("OkÃ§u", 7, 18, 20);
+//				break;
+//			case 3:
+//				initPlayer("Ãžovalye", 8, 24, 5);
+//				break;
+//			default:
+//				initPlayer("Samuray", 5, 21, 15);
+//				break;
+//			}
+//			System.out.println("Karakter OluÃ¾turuldu ! AdÃ½=" + getcName() + " ,Hasar=" + getDamage() + " ,SaÃ°lÃ½k="
+//					+ getHealthy() + " ,Para=" + getMoney());
+//		}
+//		
+		
 		System.out.println("-------------------");
-		System.out.println("Lütfen bir karakter giriniz !");
+		System.out.println("LÃ¼tfen bir karakter giriniz !");
 		int selectChar = input.nextInt();
 		switch (selectChar) {
 		case 1:
@@ -58,10 +81,10 @@ public class Player {
 
 	public void printInfo() {
 		System.out.println("Silah: "+this.getInventory().getWeapon().getName()  +
-				", Zýrh: " +this.getInventory().getArmor().getName()+
+				", ZÄ±rh: " +this.getInventory().getArmor().getName()+
 				", Bloklama: "+this.getInventory().getArmor().getBlock()+
-				", Hasarýnýz: " + this.getTotalDamage() + 
-				", Saðlýk: "+ this.getHealth() + 
+				", HasarÄ±nÄ±z: " + this.getTotalDamage() + 
+				", SaÄŸlÄ±k: "+ this.getHealth() + 
 				", Para : " + this.getMoney());
 	}
 	public int getTotalDamage() {

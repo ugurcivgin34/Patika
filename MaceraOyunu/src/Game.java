@@ -19,7 +19,7 @@ public class Game {
 			System.out.println("############Bölgeler#################");
 			System.out.println();
 			System.out.println("Bölgeler");
-			System.out.println("1 - Güvenli Ev -->Burasý sizin için güvenli bir ev , düþman yoktur !" );
+			System.out.println("1 - Güvenli Ev -->Burasý sizin için güvenli bir ev , düþman yoktur !");
 			System.out.println("2 - Eþya Dükkaný --> Silah veya Zýrh satýn alabilirsiniz !");
 			System.out.println("3 - Maðara --> Ödül <Yemek> , dikkatli ol zombi çýkabilir");
 			System.out.println("4 - Orman --> Ödül <Odun> , dikkatli ol vampir çýkabilir");
@@ -36,32 +36,60 @@ public class Game {
 				break;
 
 			case 2:
+
 				location = new ToolStore(player);
 				break;
-				
+
 			case 3:
-				location = new Cave(player);
-				break;
+				if (player.getInventory().isFood() == false) {
+					location = new Cave(player);
+					break;
+				} else {
+					System.out.println("Burdan daha önce ödül aldýn .Güvenli eve yönlendiriliyorsun");
+					location = new SafeHouse(player);
+					break;
+				}
+
 			case 4:
-				location = new Forest(player);
-				break;
-				
+				if (player.getInventory().isFirewood() == false) {
+					location = new Forest(player);
+					break;
+				} else {
+					System.out.println("Burdan daha önce ödül aldýn .Güvenli eve yönlendiriliyorsun");
+					location = new SafeHouse(player);
+					break;
+				}
+
 			case 5:
-				location = new River(player);
-				break;
+				if (player.getInventory().isWater() == false) {
+					location = new River(player);
+					break;
+				} else {
+					System.out.println("Burdan daha önce ödül aldýn .Güvenli eve yönlendiriliyorsun");
+					location = new SafeHouse(player);
+					break;
+				}
 
 			default:
 				System.out.println("Lütfen geçerli bölge giriniz");
 			}
-			if(location == null) {
+			if (location == null) {
 				System.out.println("Oyun btti. Yine bekleriz");
 				break;
 			}
-			
+
 			if (!location.onLocation()) {
 				System.out.println("GAME OVER!");
 				break;
 			}
+			
+			if(location.getClass().getName().equals("safehouse")) {
+				if(player.getInventory().isFirewood() && player.getInventory().isWater() && player.getInventory().isFood()) {
+					System.out.println("Oyunu kazandýnýz");
+					break;
+				}
+			}
+
 		}
 
 	}

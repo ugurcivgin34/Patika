@@ -9,36 +9,55 @@ public abstract class BattleLoc extends Location {
 	public BattleLoc(Player player, String name, Obstacle obstacle, String award, int maxObstacle) {
 		super(player, name);
 		this.obstacle = obstacle;
-		this.award = this.award;
+		this.award = award;
 		this.maxObstacle = maxObstacle;
 
 	}
 
 	@Override
 	boolean onLocation() {
+		
 		int obsNumver = this.randomObstacleNumber();
 		System.out.println("Þuan buradasýnýz : " + this.getName());
-		System.out.println("Dikkatli ol Burada ! " + obsNumver + " tane " + this.getObstacle().getName() + " yaþýyor ! ");
+		System.out
+				.println("Dikkatli ol Burada ! " + obsNumver + " tane " + this.getObstacle().getName() + " yaþýyor ! ");
 		System.out.println("<S>avaþ yada <k>aç");
+		System.out.println(this.getPlayer().getInventory().isFood());
+
 		String selectCase = input.nextLine();
 		selectCase = selectCase.toUpperCase();
-		if (selectCase.equals("S") && combat(obsNumver)) {
-			
-				System.out.println(this.getName() + "tüm düþmanlarý yendiniz ! ");
+
+		if (selectCase.equals("S")) {
+			if (combat(obsNumver)) {
+				System.out.println(this.getName() + " Bölgesindeki düþmanlarý temizlediniz ");
+				if (this.getAward().equals("food") && this.getPlayer().getInventory().isFood() == false) {
+					System.out.println(this.award + "kazandýnýz");
+					this.getPlayer().getInventory().setFood(true);
+				} else if(this.getAward().equals("water") && this.getPlayer().getInventory().isWater() == false) {
+					System.out.println(this.award + "kazandýnýz");
+					this.getPlayer().getInventory().setWater(true);
+				} else if (this.getAward().equals("firewood") && this.getPlayer().getInventory().isFirewood() == false) {
+					System.out.println(this.award + "kazandýnýz");
+					this.getPlayer().getInventory().setFirewood(true);
+				}
 				return true;
-			
+			}
+
+//			if(this.getPlayer().getInventory().isFood()) {
+//			return false;	
+//			}
+//				
+//				
+			if (this.getPlayer().getHealth() <= 0) {
+				System.out.println("Öldünüz");
+				return false;
+			}
 		}
-		
-		if(this.getPlayer().getHealth()<=0) {
-			System.out.println("Öldünüz");
-			return false;
-		}
-		
 		return true;
 	}
 
 	public boolean combat(int obsNumber) {
-		
+
 		for (int i = 1; i <= obsNumber; i++) {
 			this.getObstacle().setHealth(this.getObstacle().getOrjinalHealth());
 			playerStats();
@@ -61,19 +80,25 @@ public abstract class BattleLoc extends Location {
 						this.getPlayer().setHealth(this.getPlayer().getHealth() - obstacleDamage);
 						afterHit();
 					}
-				}else {
+				} else {
 					return false;
 				}
 			}
-			
-			if(this.getObstacle().getHealth() <this.getPlayer().getHealth()) {
+
+			if (this.getObstacle().getHealth() < this.getPlayer().getHealth()) {
 				System.out.println("Düþmaný yendiniz ! ");
+
 				System.out.println(this.getObstacle().getAward() + " para kazandýnýz ");
-				this.getPlayer().setMoney(this.getPlayer().getMoney()+ this.getObstacle().getAward());
+				System.out.println(this.getAward() + " ödül kazandýnýz");
+				this.getPlayer().setMoney(this.getPlayer().getMoney() + this.getObstacle().getAward());
 				System.out.println("Güncel paranýz : " + this.getPlayer().getMoney());
+			} else {
+				return false;
 			}
+			System.out.println("------------");
 		}
-		return false;
+		return true;
+
 	}
 
 	public void afterHit() {
@@ -95,7 +120,7 @@ public abstract class BattleLoc extends Location {
 	}
 
 	public void obstacleStats(int i) {
-		System.out.println( i+". "+this.getObstacle().getName() + " Deðerleri");
+		System.out.println(i + ". " + this.getObstacle().getName() + " Deðerleri");
 		System.out.println("----------------");
 		System.out.println("Saðlýk : " + this.getObstacle().getHealth());
 		System.out.println("Hasar : " + this.getObstacle().getDamage());
